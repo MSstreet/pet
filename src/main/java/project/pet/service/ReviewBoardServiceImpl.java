@@ -3,13 +3,19 @@ package project.pet.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import project.pet.domain.ReviewBoard;
+import project.pet.dto.PageRequestDTO;
+import project.pet.dto.PageResponseDTO;
 import project.pet.dto.ReviewBoardDTO;
 import project.pet.repository.ReviewBoardRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -58,5 +64,24 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
     @Override
     public void remove(Long bnum){
         reviewBoardRepository.deleteById(bnum);
+    }
+
+    @Override
+    public PageResponseDTO<ReviewBoardDTO> list(PageRequestDTO pageRequestDTO){
+
+        String[] types = pageRequestDTO.getType();
+        String keyword = pageRequestDTO.getKeyword();
+        Pageable pageable = pageRequestDTO.getPageable();
+
+        Page<ReviewBoard> result = reviewBoardRepository.searchAll(types, keyword, pageable);
+
+        List<ReviewBoardDTO> dtoList = result.getContent().stream().map(reviewBoard -> modelMapper.map(reviewBoard,
+                ReviewBoardDTO.class)).collect(Collectors.toList());
+
+        return PageResponseDTO.<ReviewBoardDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
     }
 }

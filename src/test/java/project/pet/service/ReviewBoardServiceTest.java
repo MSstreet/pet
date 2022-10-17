@@ -4,6 +4,8 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import project.pet.dto.PageRequestDTO;
+import project.pet.dto.PageResponseDTO;
 import project.pet.dto.ReviewBoardDTO;
 import project.pet.service.ReviewBoardService;
 
@@ -31,5 +33,20 @@ public class ReviewBoardServiceTest {
         ReviewBoardDTO reviewBoardDTO = ReviewBoardDTO.builder().bnum(101L).title("Updated...101").content("Updated content 101...").build();
 
         reviewBoardService.modify(reviewBoardDTO);
+    }
+
+    @Test
+    public void testList(){
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .type("tcw")
+                .keyword("1")
+                .page(1)
+                .size(10)
+                .build();
+
+        PageResponseDTO<ReviewBoardDTO> responseDTO = reviewBoardService.list(pageRequestDTO);
+
+        log.info(responseDTO);
     }
 }
