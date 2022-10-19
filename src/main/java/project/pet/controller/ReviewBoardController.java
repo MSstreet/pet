@@ -2,6 +2,7 @@ package project.pet.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,7 @@ public class ReviewBoardController {
         model.addAttribute("responseDTO", responseDTO);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/register")
     public void registerGET(){
 
@@ -62,6 +64,8 @@ public class ReviewBoardController {
         return "redirect:/board/list";
     }
 
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping({"/read", "/modify"})
     public void read(Long bnum, PageRequestDTO pageRequestDTO, Model model){
 
@@ -72,6 +76,7 @@ public class ReviewBoardController {
         model.addAttribute("dto", reviewBoardDTO);
     }
 
+    @PreAuthorize("principal.username == #reviewBoardDTO.writer")//principal.username = 현재 로그인된 사용자 아이디 // #reviewBoardDTO = 현재 파라미터가 수집된 DTO reviewboard 에러
     @PostMapping("/modify")
     public String modify(PageRequestDTO pageRequestDTO,
                          @Valid ReviewBoardDTO reviewBoardDTO,
@@ -87,7 +92,7 @@ public class ReviewBoardController {
 
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
 
-            redirectAttributes.addAttribute("bno", reviewBoardDTO.getBnum());
+            redirectAttributes.addAttribute("bnum", reviewBoardDTO.getBnum());
 
             return "redirect:/board/modify?+link";
         }
@@ -96,11 +101,11 @@ public class ReviewBoardController {
 
         redirectAttributes.addFlashAttribute("result","modified");
 
-        redirectAttributes.addAttribute("bno", reviewBoardDTO.getBnum());
+        redirectAttributes.addAttribute("bnum", reviewBoardDTO.getBnum());  //bno -> bnum 수정
 
         return "redirect:/board/read";
     }
-
+    @PreAuthorize("principal.username == #reviewBoardDTO.writer")
     @PostMapping("/remove")
     public String remove(Long bno, RedirectAttributes redirectAttributes){
 
@@ -113,5 +118,6 @@ public class ReviewBoardController {
         return "redirect:/board/list";
 
     }
+
 
 }
