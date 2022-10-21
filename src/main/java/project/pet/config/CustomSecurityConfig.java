@@ -13,10 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import project.pet.security.CustomUserDetailsService;
 import project.pet.security.handler.Custom403Handler;
+import project.pet.security.handler.CustomSocialLoginSuccessHandler;
 
 import javax.sql.DataSource;
 
@@ -40,7 +42,6 @@ public class CustomSecurityConfig {
         log.info("----------------------configure-----------------------------");
 
 
-
         http.formLogin().loginPage("/member/login");
 
         http.csrf().disable();
@@ -52,6 +53,10 @@ public class CustomSecurityConfig {
                 .tokenValiditySeconds(60*60*24*30);
 
         http.exceptionHandling().accessDeniedHandler((accessDeniedHandler()));
+
+        http.oauth2Login()
+                .loginPage("/member/login")
+                .successHandler(authenticationSuccessHandler());
 
         return http.build();
     }
@@ -76,5 +81,10 @@ public class CustomSecurityConfig {
         JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
         repo.setDataSource(dataSource);
         return repo;
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler(){
+        return new CustomSocialLoginSuccessHandler(passwordEncoder());
     }
 }
