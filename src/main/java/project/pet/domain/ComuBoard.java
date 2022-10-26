@@ -1,8 +1,15 @@
 package project.pet.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class ComuBoard extends BaseEntity{
 
     @Id

@@ -11,17 +11,15 @@ import project.pet.domain.QComuBoard;
 
 import java.util.List;
 
-public class ComuBoardSeachImpl extends QuerydslRepositorySupport implements ComuBoardSearch {
+public class ComuBoardSearchImpl extends QuerydslRepositorySupport implements ComuBoardSearch {
 
-    public ComuBoardSeachImpl(){
+    public ComuBoardSearchImpl(){
         super(ComuBoard.class);
     }
 
     @Override
-    public Page<ComuBoard> search1(Pageable pageable){
-
+    public Page<ComuBoard> search2(Pageable pageable){
         QComuBoard comuBoard = QComuBoard.comuBoard;
-
         JPQLQuery<ComuBoard> query = from(comuBoard);
 
         query.where(comuBoard.title.contains("1"));
@@ -34,9 +32,8 @@ public class ComuBoardSeachImpl extends QuerydslRepositorySupport implements Com
 
         return null;
     }
-
     @Override
-    public Page<ComuBoard> searchAll(String[] types, String keyword, Pageable pageable){
+    public Page<ComuBoard> searchAll1(String[] types, String keyword, Pageable pageable){
 
         QComuBoard comuBoard = QComuBoard.comuBoard;
         JPQLQuery<ComuBoard> query = from(comuBoard);
@@ -59,7 +56,7 @@ public class ComuBoardSeachImpl extends QuerydslRepositorySupport implements Com
                         break;
                 }
             }
-            query.where(booleanBuilder);
+           query.where(booleanBuilder);
         }
         query.where(comuBoard.bno.gt(0L));
 

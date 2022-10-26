@@ -6,9 +6,9 @@ import project.pet.domain.ComuBoard;
 
 public interface ComuBoardSearch {
 
-    Page<ComuBoard> search1(Pageable pageable);
-
-    Page<ComuBoard> searchAll(String[] types, String keyword, Pageable pageable);
+    Page<ComuBoard> search2(Pageable pageable);
+//
+    Page<ComuBoard> searchAll1(String[] types, String keyword, Pageable pageable);
 
 
 
