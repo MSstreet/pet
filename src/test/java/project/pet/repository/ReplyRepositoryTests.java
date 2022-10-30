@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import project.pet.domain.ComuBoard;
 import project.pet.domain.Reply;
 import project.pet.domain.ReviewBoard;
 
@@ -25,10 +26,10 @@ public class ReplyRepositoryTests {
 
         Long bno = 90L;
 
-        ReviewBoard reviewBoard = ReviewBoard.builder().bnum(bno).build();
+        ComuBoard comuBoard = ComuBoard.builder().bno(bno).build();
 
         Reply reply = Reply.builder()
-                .reviewBoard(reviewBoard)
+                .comuBoard(comuBoard)
                 .replyText("댓글.....")
                 .replyer("replyer1")
                 .build();
@@ -36,18 +37,18 @@ public class ReplyRepositoryTests {
         replyRepository.save(reply);
     }
 
-    //@Transactional
-//    @Test
-//    public void testBoardReplies() {
-//
-//        Long bno = 100L;
-//
-//        Pageable pageable = PageRequest.of(0,10, Sort.by("rno").descending());
-//
-//        Page<Reply> result = replyRepository.listOfReviewBoard(bno, pageable);
-//
-//        result.getContent().forEach(reply -> {
-//            log.info(reply);
-//        });
-//    }
+    @Transactional
+    @Test
+    public void testBoardReplies() {
+
+        Long bno = 100L;
+
+        Pageable pageable = PageRequest.of(0,10, Sort.by("rno").descending());
+
+        Page<Reply> result = replyRepository.listOfReviewBoard(bno, pageable);
+
+        result.getContent().forEach(reply -> {
+            log.info(reply);
+        });
+    }
 }

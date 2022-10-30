@@ -8,10 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import project.pet.domain.ComuBoard;
 import project.pet.domain.ReviewBoard;
-import project.pet.dto.ComuBoardDTO;
-import project.pet.dto.PageRequestDTO;
-import project.pet.dto.PageResponseDTO;
-import project.pet.dto.ReviewBoardDTO;
+import project.pet.dto.*;
 import project.pet.repository.ComuBoardRepository;
 
 import javax.transaction.Transactional;
@@ -83,6 +80,22 @@ public class ComuBoardServiceImpl implements ComuBoardService {
         return PageResponseDTO.<ComuBoardDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public PageResponseDTO<ComuBoardListReplyCountDTO> listWithReplyCount(PageRequestDTO pageRequestDTO){
+
+        String[] types = pageRequestDTO.getType();
+        String keyword = pageRequestDTO.getKeyword();
+        Pageable pageable = pageRequestDTO.getPageable("bno");
+
+        Page<ComuBoardListReplyCountDTO> result = comuBoardRepository.searchWithReplyCount(types, keyword, pageable);
+
+        return PageResponseDTO.<ComuBoardListReplyCountDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(result.getContent())
                 .total((int)result.getTotalElements())
                 .build();
     }

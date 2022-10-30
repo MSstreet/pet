@@ -6,13 +6,13 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Reply", indexes = {
-        @Index(name = "idx_reply_board_bno", columnList = "review_board_bnum")
+        @Index(name = "idx_reply_board_bno", columnList = "comu_board_bno")
 })
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "reviewBoard")
+@ToString(exclude = "comuBoard")
 public class Reply extends BaseEntity{
 
     @Id
@@ -20,9 +20,13 @@ public class Reply extends BaseEntity{
     private Long rno;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private ReviewBoard reviewBoard;
+    private ComuBoard comuBoard;
 
     private String replyText;
 
     private String replyer;
+
+    public void changeTest(String text){
+        this.replyText =text;
+    }
 }

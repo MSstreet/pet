@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.pet.dto.ComuBoardDTO;
+import project.pet.dto.ComuBoardListReplyCountDTO;
 import project.pet.dto.PageRequestDTO;
 import project.pet.dto.PageResponseDTO;
 import project.pet.service.ComuBoardService;
@@ -26,7 +27,9 @@ public class ComuBoardController {
 
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model){
-        PageResponseDTO<ComuBoardDTO> responseDTO = comuBoardService.list1(pageRequestDTO);
+        //PageResponseDTO<ComuBoardDTO> responseDTO = comuBoardService.list1(pageRequestDTO);
+
+        PageResponseDTO<ComuBoardListReplyCountDTO> responseDTO = comuBoardService.listWithReplyCount(pageRequestDTO);
 
         log.info(responseDTO);
 

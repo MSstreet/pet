@@ -1,69 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Board Register</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Simple Sidebar - Login</title>
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
+<body class="align-middle" >
+<div class="container-fluid d-flex justify-content-center" style="height: 100vh">
 
-<div layout:fragment="content">
-  <div class="row mt-3">
-    <div class="col">
-      <div class="card">
-        <div class="card-header">
-          Board Register
+  <div class="card align-self-center">
+    <div class="card-header">
+      LOGIN Page
+    </div>
+    <div class="card-body">
+      <th:block th:if="${param.logout != null}">
+        <h1>Logout........</h1>
+      </th:block>
+
+      <form id="registerForm" action="/member/login" method="post">
+        <div class="input-group mb-3">
+          <span class="input-group-text">아이디</span>
+          <input type="text" name="username" class="form-control" placeholder="USER ID">
         </div>
-        <div class="card-body">
-          <form action="/board/register" method="post">
-            <div class="input-group mb-3">
-              <span class="input-group-text">Title</span>
-              <input type="text" name="title" class="form-control" placeholder="Title">
-            </div>
-
-            <div class="input-group mb-3">
-              <span class="input-group-text">Content</span>
-              <textarea class="form-control col-sm-5" rows="5" name="content"></textarea>
-            </div>
-
-            <div class="input-group mb-3">
-              <span class="input-group-text">Writer</span>
-              <input type="text" name="writer" class="form-control" placeholder="Writer"
-                     th:value="${#authentication.principal.username}" readonly>
-
-            </div>
-
-            <div class="my-4">
-              <div class="float-end">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-secondary">Reset</button>
-              </div>
-            </div>
-          </form>
-        </div><!--end card body-->
-
-      </div><!--end card-->
-    </div><!-- end col-->
-  </div><!-- end row-->
+        <div class="input-group mb-3">
+          <span class="input-group-text">패스워드</span>
+          <input type="text" name="password" class="form-control" placeholder="PASSWORD">
+        </div>
+        <div class="input-group mb-3 ">
+          <input class="form-check-input" type="checkbox" name="remember-me">
+          <label class="form-check-label">
+            자동 로그인
+          </label>
+        </div>
+        <div class="my-4">
+          <div class="float-end">
+            <button type="submit" class="btn btn-primary submitBtn">LOGIN</button>
+          </div>
+        </div>
+      </form>
+      <a href="/oauth2/authorization/kakao">KAKAO</a>
+    </div><!--end card body-->
+  </div><!--end card-->
 </div>
-
-
-<script layout:fragment="script" th:inline="javascript">
-
-  const auth = [[${#authentication.principal}]]
-
-  const errors = [[${errors}]]
-  console.log(errors)
-
-  let errorMsg = ''
-
-  if(errors){
-    for (let i = 0; i < errors.length; i++) {
-      errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
-    }
-    alert(errorMsg)
-  }
-
-</script>
-
+</body>
+</html>

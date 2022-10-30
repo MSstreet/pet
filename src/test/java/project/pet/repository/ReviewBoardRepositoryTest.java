@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import project.pet.domain.ReviewBoard;
+import project.pet.dto.ReviewBoardListReplyCountDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -121,4 +122,8 @@ public class ReviewBoardRepositoryTest {
 
         result.getContent().forEach(reviewBoard -> log.info(reviewBoard));
     }
+
+
+
+
 }
